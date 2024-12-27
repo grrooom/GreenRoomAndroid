@@ -2,4 +2,7 @@
 <resources>
     <color name="standard_gray">#CACDD2</color>
     <color name="standard_green">#29BA6C</color>
+    <color name="standard_black">#1B1D1F</color>
+    <color name="standard_white">#FFFFFF</color>
+    <color name="gray400">#73787E</color>
 </resources>
