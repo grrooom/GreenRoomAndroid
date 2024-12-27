@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -51,8 +53,10 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'com.tbuonomo:dotsindicator:4.3'
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
+    implementation libs.androidx.viewpager2
+    implementation libs.dotsindicator
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.activity.compose
