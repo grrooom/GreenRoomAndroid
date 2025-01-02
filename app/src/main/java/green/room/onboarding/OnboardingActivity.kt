@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,19 @@ class OnboardingActivity : AppCompatActivity() {
                 updatePageVisibility(position)
             }
         })
+
+        // "시작하기" 버튼 클릭 리스너 설정
+        val startButton = findViewById<Button>(R.id.onboarding_start_button)
+        startButton.setOnClickListener {
+            Log.d("OnboardingActivity", "Start button clicked")
+
+            // ViewPager2를 다음 페이지로 이동
+            val nextPosition = (viewPager.currentItem + 1).coerceAtMost(views.size - 1) // 마지막 페이지를 넘지 않도록 설정
+            viewPager.currentItem = nextPosition
+
+            // 페이지 변경에 따라 updatePageVisibility 호출
+            updatePageVisibility(nextPosition)
+        }
     }
 
     private fun initializePageViews() {
