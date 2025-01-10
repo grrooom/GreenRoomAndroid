@@ -1,5 +1,6 @@
 package green.room.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import green.room.R
+import green.room.preference.DevicePreference
+import green.room.signup.SignupActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OnboardingActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
@@ -57,10 +63,24 @@ class OnboardingActivity : AppCompatActivity() {
 
             // ViewPager2를 다음 페이지로 이동
             val nextPosition = (viewPager.currentItem + 1).coerceAtMost(views.size - 1) // 마지막 페이지를 넘지 않도록 설정
-            viewPager.currentItem = nextPosition
-
-            // 페이지 변경에 따라 updatePageVisibility 호출
-            updatePageVisibility(nextPosition)
+            // 마지막 페이지인지 확인
+            if (viewPager.currentItem == views.size - 1) {
+                // 온보딩 완료 상태 저장
+                CoroutineScope(Dispatchers.IO).launch {
+                    DevicePreference.saveBoolean(
+                        this@OnboardingActivity,
+                        DevicePreference.PreferenceKey.ONBOARDING_COMPLETED,
+                        true
+                    )
+                }
+                Log.d("OnboardingActivity", "Onboarding completed")
+                val intent = Intent(this, SignupActivity::class.java)
+                startActivity(intent)
+            } else {
+                // ViewPager2를 다음 페이지로 이동
+                viewPager.currentItem = nextPosition
+                updatePageVisibility(nextPosition)
+            }
         }
     }
 

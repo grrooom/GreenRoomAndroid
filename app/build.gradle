@@ -53,7 +53,10 @@ android {
 }
 
 dependencies {
+    implementation libs.androidx.datastore
+    implementation libs.androidx.datastore.preferences.rxjava3
     implementation libs.hilt.android
+    implementation libs.material.v1120
     kapt libs.hilt.android.compiler
     implementation libs.androidx.viewpager2
     implementation libs.dotsindicator
