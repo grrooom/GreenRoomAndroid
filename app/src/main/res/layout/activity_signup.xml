@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <!-- Image with ic_partypopper.svg  -->
+    <ImageView
+        android:id="@+id/signup_head"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginStart="40dp"
+        android:src="@drawable/ic_partypopper"
+        android:contentDescription="@string/ic_green_room_title"
+        android:layout_gravity="start" />
+
+    <TextView
+        android:id="@+id/signup_head_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="그린룸 오신 걸 환영해요!"
+        android:textColor="@color/standard_black"
+        android:layout_marginBottom="3dp"
+        android:layout_marginStart="40dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_gravity="start" />
+
+    <TextView
+        android:id="@+id/signup_head_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임을 설정해 주세요"
+        android:textColor="@color/standard_black"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="40dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/pretendard_semi_bold"
+        android:layout_gravity="start" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_body_2"
+        android:layout_width="@dimen/standard_horizontal_box_frame_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_gravity="start"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/standard_gray"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:helperText="한글 또는 영문, 10자 이내로 가능해요"
+        app:helperTextTextColor="@color/standard_gray"
+        app:hintTextAppearance="@style/TextInputHintStyle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_field"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:inputType="textPersonName"
+            android:maxLength="10"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/standard_black"
+            android:textColorHint="@color/standard_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/signup_confirm_button"
+        android:layout_width="@dimen/standard_horizontal_box_frame_width"
+        android:layout_height="@dimen/standard_horizontal_box_frame_height"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="16dp"
+        android:text="확인"
+        android:textColor="@color/standard_white"
+        android:background="@drawable/standard_horizontal_box_radius_8_gray_background"
+        android:fontFamily="@font/pretendard_bold"
+        android:textSize="16sp" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:indicatorSize="48dp"
+        app:indicatorDirectionCircular="clockwise"
+        app:indicatorColor="@color/standard_green"
+        app:trackColor="@color/standard_white"
+        android:visibility="visible"
+        />
+
+</LinearLayout>

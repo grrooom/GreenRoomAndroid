@@ -7,9 +7,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
@@ -25,10 +25,38 @@
             </intent-filter>
         </activity>
 
+        <!-- SplashActivity -->
+        <activity
+            android:name=".splash.SplashActivity"
+            android:theme="@style/Theme.Splash"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <!-- OnboardingActivity -->
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="true" />
+
+        <!-- SignupActivity -->
+        <activity
+            android:name=".signup.SignupActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 딥링크 설정 -->
+                <data
+                    android:scheme="https"
+                    android:host="greenroom.com"
+                    android:pathPrefix="/signup" />
+            </intent-filter>
+        </activity>
 
     </application>
 </manifest>

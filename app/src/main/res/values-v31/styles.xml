@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextInputHintStyle">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/standard_gray</item> <!-- 힌트 색상 -->
+    </style>
+
+    <style name="Theme.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item> <!-- Layer-list 사용 -->
+        <item name="android:windowSplashScreenBackground">@color/standard_green</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash</item> <!-- PNG 또는 벡터 -->
+        <item name="android:windowSplashScreenAnimationDuration">1000</item> <!-- 1초 지속 -->
+    </style>
+</resources>
