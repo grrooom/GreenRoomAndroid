@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MainApplication</string>
-    <string name="onboarding_seq_1">onboarding_seq_1</string>
+    <string name="app_name">그린룸</string>
     <string name="ic_green_room_title" />
 </resources>

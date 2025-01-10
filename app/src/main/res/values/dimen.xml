@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- UI Standard button size -->
-    <dimen name="standard_button_width">304dp</dimen>
-    <dimen name="standard_button_height">45dp</dimen>
+    <dimen name="standard_horizontal_box_frame_width">304dp</dimen>
+    <dimen name="standard_horizontal_box_frame_height">45dp</dimen>
 </resources>
