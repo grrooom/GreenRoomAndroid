@@ -13,6 +13,34 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ *  * =========================================================
+ *  * 🔐 EncryptedSharedPreferences Data Flow (Sequence Diagram)
+ *  * =========================================================
+ *
+    User                           App                          Android Keystore              Disk
+    │                              │                                  │                           │
+    │ ─────── 1. Create `MasterKey` ────> │                                  │                           │
+    │                              │ ─────── 2. Store encryption key in Keystore ───────> │                           │
+    │                              │                                  │                           │
+    │ ─────── 3. Initialize `EncryptedSharedPreferences` ───> │                                  │                           │
+    │                              │ ─────── 4. Allocate file for encrypted storage ───> │                           │
+    │                              │                                  │                           │
+    │ ─────── 5. Store data (`putString()`) ───> │                                  │                           │
+    │                              │ ─────── 6. Encrypt data using AES-256-GCM ───> │                           │
+    │                              │                                  │ ─────── 7. Store encrypted data ───> │
+    │                              │                                  │                           │
+    │ ─────── 8. Retrieve data (`getString()`) ───> │                                  │                           │
+    │                              │ ─────── 9. Decrypt data using AES-256-GCM ───> │                           │
+    │                              │                                  │ ─────── 10. Return decrypted data ───> │
+    │                              │                                  │                           │
+    │ ─────── 11. Delete data (`remove()`) ───> │                                  │                           │
+    │                              │ ─────── 12. Remove encrypted data from storage ───> │                           │
+    │                              │                                  │                           │
+    │ ─────── 13. Clear all (`clear()`) ───> │                                  │                           │
+    │                              │ ─────── 14. Remove all encrypted data ───> │                           │
+    │                              │                                  │                           │
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object SecurePreferencesModule {
