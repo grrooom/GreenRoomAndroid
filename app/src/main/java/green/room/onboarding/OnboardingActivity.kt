@@ -8,18 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import dagger.hilt.android.AndroidEntryPoint
 import green.room.R
-import green.room.preference.DevicePreference
-import green.room.signup.SignupActivity
+import green.room.auth.AuthActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class OnboardingActivity : AppCompatActivity() {
+    private val viewModel: OnboardingViewModel by viewModels()
+
     private lateinit var viewPager: ViewPager2
     private lateinit var dotsIndicator: DotsIndicator
     private val views = mutableListOf<List<View>>()
@@ -65,19 +69,13 @@ class OnboardingActivity : AppCompatActivity() {
             val nextPosition = (viewPager.currentItem + 1).coerceAtMost(views.size - 1) // 마지막 페이지를 넘지 않도록 설정
             // 마지막 페이지인지 확인
             if (viewPager.currentItem == views.size - 1) {
-                // 온보딩 완료 상태 저장
                 CoroutineScope(Dispatchers.IO).launch {
-                    DevicePreference.saveBoolean(
-                        this@OnboardingActivity,
-                        DevicePreference.PreferenceKey.ONBOARDING_COMPLETED,
-                        true
-                    )
+                    viewModel.setOnboadingDoneOnPref()
                 }
                 Log.d("OnboardingActivity", "Onboarding completed")
-                val intent = Intent(this, SignupActivity::class.java)
+                val intent = Intent(this, AuthActivity::class.java)
                 startActivity(intent)
             } else {
-                // ViewPager2를 다음 페이지로 이동
                 viewPager.currentItem = nextPosition
                 updatePageVisibility(nextPosition)
             }
