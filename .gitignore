@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+secrets.properties
+green-room-debug.jks
