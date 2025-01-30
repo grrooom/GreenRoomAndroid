@@ -1,100 +1,106 @@
 package green.room.preference
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object DevicePreference {
-    private const val TAG = "DevicePreference"
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "device_preference")
+@Module
+@InstallIn(SingletonComponent::class)
+object SecurePreferencesModule {
+
+    @Provides
+    @Singleton
+    fun provideEncryptedSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        val masterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        return EncryptedSharedPreferences.create(
+            context,
+            "secure_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+}
+
+@Singleton
+class DevicePreference @Inject constructor(
+    private val sharedPreferences: SharedPreferences
+) {
+    private val TAG = "DevicePreference"
 
     enum class PreferenceKey(val key: String) {
         ONBOARDING_COMPLETED("onboarding_completed"),
-        NICK_NAME("nick_name")
+        EMAIL("email"),
+        NICK_NAME("nick_name"),
+        ACCESS_TOKEN("access_token"),
+        REFRESH_TOKEN("refresh_token")
     }
 
     /**
-     * Save a string value to the DataStore
+     * Save a string value to EncryptedSharedPreferences
      */
-    suspend fun saveString(context: Context, preference: PreferenceKey, value: String) {
-        val preferencesKey = androidx.datastore.preferences.core.stringPreferencesKey(preference.key)
-        context.dataStore.edit { preferences ->
-            preferences[preferencesKey] = value
-        }
-        logAllValues(context)
-    }
-
-
-    /**
-     * Save a boolean value to the DataStore
-     */
-    suspend fun saveBoolean(context: Context, preference: PreferenceKey, value: Boolean) {
-        val preferencesKey = booleanPreferencesKey(preference.key)
-        context.dataStore.edit { preferences ->
-            preferences[preferencesKey] = value
-        }
-        logAllValues(context)
+    fun saveString(preference: PreferenceKey, value: String) {
+        sharedPreferences.edit().putString(preference.key, value).apply()
+        logAllValues()
     }
 
     /**
-     * Retrieve a string value from the DataStore
+     * Save a boolean value to EncryptedSharedPreferences
      */
-    fun getString(context: Context, preference: PreferenceKey, defaultValue: String): Flow<String> {
-        val preferencesKey = androidx.datastore.preferences.core.stringPreferencesKey(preference.key)
-        return context.dataStore.data.map { preferences ->
-            preferences[preferencesKey] ?: defaultValue
-        }
+    fun saveBoolean(preference: PreferenceKey, value: Boolean) {
+        sharedPreferences.edit().putBoolean(preference.key, value).apply()
+        logAllValues()
     }
 
     /**
-     * Retrieve a boolean value from the DataStore
+     * Retrieve a string value from EncryptedSharedPreferences
      */
-    fun getBoolean(context: Context, preference: PreferenceKey, defaultValue: Boolean): Flow<Boolean> {
-        val preferencesKey = booleanPreferencesKey(preference.key)
-        return context.dataStore.data.map { preferences ->
-            val value = preferences[preferencesKey] ?: defaultValue
-            logAllValues(context)
-            value
-        }
+    fun getString(preference: PreferenceKey, defaultValue: String): String {
+        return sharedPreferences.getString(preference.key, defaultValue) ?: defaultValue
     }
 
     /**
-     * Delete a boolean value from the DataStore
+     * Retrieve a boolean value from EncryptedSharedPreferences
      */
-    suspend fun deleteBoolean(context: Context, preference: PreferenceKey) {
-        val preferencesKey = booleanPreferencesKey(preference.key)
-        context.dataStore.edit { preferences ->
-            preferences.remove(preferencesKey)
-        }
-        logAllValues(context)
+    fun getBoolean(preference: PreferenceKey, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(preference.key, defaultValue)
     }
 
     /**
-     * Clear all values from the DataStore
+     * Delete a specific value from EncryptedSharedPreferences
      */
-    suspend fun clearAll(context: Context) {
-        context.dataStore.edit { preferences ->
-            preferences.clear() // 모든 값을 지움
-        }
-        // clear 후에 로그 출력
-        logAllValues(context)
+    fun deleteValue(preference: PreferenceKey) {
+        sharedPreferences.edit().remove(preference.key).apply()
+        logAllValues()
     }
 
     /**
-     * Log all values in the DataStore
+     * Clear all values from EncryptedSharedPreferences
      */
-    private suspend fun logAllValues(context: Context) {
-        val preferences = context.dataStore.data.first() // 현재 저장된 모든 값을 가져옴
-        val allValues = preferences.asMap().map { entry ->
-            "*${entry.key.name} = ${entry.value}"
+    fun clearAll() {
+        sharedPreferences.edit().clear().apply()
+        logAllValues()
+    }
+
+    /**
+     * Log all values in EncryptedSharedPreferences
+     */
+    private fun logAllValues() {
+        val allValues = sharedPreferences.all.map { entry ->
+            "*${entry.key} = ${entry.value}"
         }.joinToString(separator = "\n")
-        Log.d(TAG, "Current DataStore values:\n[\n$allValues\n]")
+        Log.d(TAG, "Current EncryptedSharedPreferences values:\n[\n$allValues\n]")
     }
 }
