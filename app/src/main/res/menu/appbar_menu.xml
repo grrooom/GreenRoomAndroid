@@ -1,0 +1,11 @@
+<!-- res/menu/menu_appbar.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- item 1 -->
+    <item
+        android:id="@+id/appbar_my_info"
+        android:icon="@drawable/ic_appbar_myinfo"
+        app:showAsAction="ifRoom"
+        android:title="" />
+</menu>
