@@ -91,6 +91,11 @@
             android:exported="true">
         </activity>
 
+        <!-- NotificationActivity -->
+        <activity android:name=".notification.NotificationActivity"
+            android:exported="true">
+        </activity>
+
         <meta-data
             android:name="BASE_URL"
             android:value="${BASE_URL}" />
