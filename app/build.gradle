@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "green.room"
-        minSdk 26
+        minSdk 33
         //noinspection OldTargetApi
         targetSdk 34
         versionCode 1
