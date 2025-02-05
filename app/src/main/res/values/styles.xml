@@ -24,4 +24,7 @@
         <item name="android:fontFamily">@font/pretendard_light</item>
     </style>
 
+    <style name="BottomSheetStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>

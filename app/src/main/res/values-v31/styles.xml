@@ -11,4 +11,23 @@
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash</item> <!-- PNG 또는 벡터 -->
         <item name="android:windowSplashScreenAnimationDuration">1000</item> <!-- 1초 지속 -->
     </style>
+
+
+    <!-- BottomNavigationView Active Text Style -->
+    <style name="BottomNavTextActive" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/standard_green</item>
+        <item name="android:fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <!-- BottomNavigationView Inactive Text Style -->
+    <style name="BottomNavTextInactive" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textColor">@color/standard_gray</item>
+        <item name="android:fontFamily">@font/pretendard_light</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:background">#00000000</item>
+    </style>
 </resources>
