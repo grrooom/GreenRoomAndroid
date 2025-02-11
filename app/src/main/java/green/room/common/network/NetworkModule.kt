@@ -6,6 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import green.room.BuildConfig
 import green.room.auth.AuthService
+import green.room.common.network.interceptor.AuthInterceptor
+import green.room.common.network.interceptor.TokenManager
+import green.room.preference.DevicePreference
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,7 +17,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RetrofitModule {
+object NetworkModule {
 
     @Provides
     @Singleton
@@ -26,9 +29,17 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideAuthInterceptor(tokenManager: TokenManager): AuthInterceptor {
+        return AuthInterceptor(tokenManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor,
+                            authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 
@@ -47,5 +58,11 @@ object RetrofitModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTokenManager(preference: DevicePreference): TokenManager {
+        return TokenManager(preference)
     }
 }
