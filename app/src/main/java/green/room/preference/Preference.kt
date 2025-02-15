@@ -73,7 +73,8 @@ class DevicePreference @Inject constructor(
         EMAIL("email"),
         NICK_NAME("nick_name"),
         ACCESS_TOKEN("access_token"),
-        REFRESH_TOKEN("refresh_token")
+        REFRESH_TOKEN("refresh_token"),
+        FCM_TOKEN("fcm_token")
     }
 
     /**
