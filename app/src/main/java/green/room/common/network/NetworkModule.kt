@@ -9,6 +9,7 @@ import green.room.auth.AuthService
 import green.room.common.network.interceptor.AuthInterceptor
 import green.room.common.network.interceptor.TokenManager
 import green.room.preference.DevicePreference
+import green.room.profile.ProfileService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -38,8 +39,8 @@ object NetworkModule {
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor,
                             authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
     }
 
@@ -56,13 +57,20 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideTokenManager(preference: DevicePreference): TokenManager {
+        return TokenManager(preference)
+    }
+
+    // Provide Services
+    @Provides
+    @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideTokenManager(preference: DevicePreference): TokenManager {
-        return TokenManager(preference)
+    fun provideProfileService(retrofit: Retrofit): ProfileService {
+        return retrofit.create(ProfileService::class.java)
     }
 }
