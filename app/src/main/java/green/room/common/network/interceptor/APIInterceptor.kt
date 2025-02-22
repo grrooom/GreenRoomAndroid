@@ -7,9 +7,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AuthInterceptor @Inject constructor
-    (private val tokenManager: TokenManager) : Interceptor {
-        val TAG = "AuthInterceptor"
+class APIInterceptor @Inject constructor(private val tokenManager: TokenManager) : Interceptor {
+        val TAG = "APIInterceptor"
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val accessToken = tokenManager.getAuthAccessToken()
