@@ -1,4 +1,4 @@
-package green.room.profile.repository
+package green.room.profile
 
 import green.room.common.network.ApiResult
 import green.room.profile.model.ProfileDTO
