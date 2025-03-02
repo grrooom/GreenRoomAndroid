@@ -11,7 +11,7 @@ data class ProfileDTO(
     @SerializedName("userDurationWithGreenroom") val userDurationWithGreenroom: Int,
     @SerializedName("level") val level: Int,
     @SerializedName("levelName") val levelName: String,
-    @SerializedName("profileImageUrl") val profileImageUrl: String?,
+    @SerializedName("profileImgUrl") val profileImgUrl: String,
     @SerializedName("seedsToNextLevel") val seedsToNextLevel: Int
 ) : UIModelConvertible<ProfileUIModel> {
 
@@ -22,7 +22,7 @@ data class ProfileDTO(
             userDurationWithGreenroom = userDurationWithGreenroom,
             level = level,
             levelName = levelName,
-            profileImageUrl = profileImageUrl,
+            profileImageUrl = profileImgUrl,
             seedsToNextLevel = seedsToNextLevel
         )
 }
