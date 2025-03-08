@@ -16,11 +16,11 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import green.room.R
+import green.room.login.LoginActivity
 import green.room.mainpage.MainPageActivity
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
-    val TAG = "AuthActivity"
     private val viewModel: AuthViewModel by viewModels()
     private var timerTextView: TextView? = null
     private var timerStub: ViewStub? = null
@@ -28,13 +28,13 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Handle deep link if activity is launched via intent
         if (isDeepLinkAccess(intent)) {
             handleDeepLink(intent)
         }
 
         setContentView(R.layout.activity_auth)
 
+        val duplicateAccountMessage = findViewById<TextView>(R.id.signup_head_5)
         val topInstructionText = findViewById<TextView>(R.id.signup_head_3)
         val bottomInstructionText = findViewById<TextInputLayout>(R.id.signup_body_2)
         timerStub = findViewById(R.id.timer_stub)
@@ -72,6 +72,11 @@ class AuthActivity : AppCompatActivity() {
                 val intent = Intent(this, MainPageActivity::class.java)
                 startActivity(intent)
             }
+        }
+
+        duplicateAccountMessage.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
 
         viewModel.topInstructionText.observe(this) { text ->
@@ -133,5 +138,9 @@ class AuthActivity : AppCompatActivity() {
         } else {
             Log.w(TAG, "Token is missing in the deep link")
         }
+    }
+
+    private companion object {
+        const val TAG = "AuthActivity"
     }
 }
